@@ -45,6 +45,7 @@
     "pino": "^8.0.0",
     "pino-pretty": "^8.0.0",
     "semver": "^7.3.7",
+    "ts-money": "^0.4.7",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

@@ -18,7 +18,7 @@ export default new SchemaVersion("1.0.0", "Complete schema in production V1.0.0"
              id            uuid           DEFAULT uuid_generate_v4()
                  CONSTRAINT users_pkey
                      PRIMARY KEY,
-             phone_number        VARCHAR(15)  UNIQUE NOT NULL,
+             phone_number VARCHAR(15)  UNIQUE NOT NULL,
              password     VARCHAR(500)   NOT NULL,
              fullname     VARCHAR(100)  NOT NULL,
              role         VARCHAR(15)   NOT NULL,
@@ -45,6 +45,7 @@ export default new SchemaVersion("1.0.0", "Complete schema in production V1.0.0"
                      PRIMARY KEY,
              status        VARCHAR(20)   NOT NULL,
              amount        INTEGER       NOT NULL,
+             currency      VARCHAR(3)   NOT NULL,
              created_at    TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
              from_wallet_id   uuid          NOT NULL
                  CONSTRAINT transfers_from_wallet_id_fk
@@ -64,6 +65,7 @@ export default new SchemaVersion("1.0.0", "Complete schema in production V1.0.0"
                      PRIMARY KEY,
              status        VARCHAR(20)   NOT NULL,
              amount        INTEGER       NOT NULL,
+             currency      VARCHAR(3)   NOT NULL,
              created_at    TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
              wallet_id     uuid      NOT NULL
                  CONSTRAINT credits_wallets_id_fk
@@ -76,6 +78,7 @@ export default new SchemaVersion("1.0.0", "Complete schema in production V1.0.0"
                  CONSTRAINT transactions_pkey
                      PRIMARY KEY,
              amount        INTEGER       NOT NULL,
+             currency      VARCHAR(3)   NOT NULL,
              status        VARCHAR(20)   NOT NULL,
              gateway       VARCHAR(25)  NOT NULL,
              external_id   VARCHAR(150)  NOT NULL,
