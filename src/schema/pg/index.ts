@@ -2,9 +2,11 @@ import SchemaVersion from "./SchemaVersion"
 import DB from "../../models/DB"
 import DBConfig, { ConfigKey } from "../../models/pg/DBConfig"
 import { IDatabase } from "pg-promise"
+import v1_0_0 from "./v1.0.0"
 
 // Add new versions here
 const SCHEMA_VERSIONS: any[] = [
+  v1_0_0,
 ]
 
 // Sort imported versions
