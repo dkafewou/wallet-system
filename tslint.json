@@ -1,0 +1,106 @@
+{
+    "extends": ["tslint:latest"],
+    "rules": {
+        "class-name": true,
+        "comment-format": [
+            true,
+            "check-space"
+        ],
+        "indent": [
+            true,
+            "tabs"
+        ],
+        "no-duplicate-variable": true,
+        "no-eval": true,
+        "no-internal-module": true,
+        "no-trailing-whitespace": true,
+        "no-var-keyword": true,
+        "one-line": [
+            true,
+            "check-open-brace",
+            "check-whitespace"
+        ],
+        "max-line-length": [true, 120],
+        "quotemark": [
+            true,
+            "single",
+            "jsx-single"
+        ],
+        "semicolon": [
+            true,
+            "always"
+        ],
+        "triple-equals": [
+            true,
+            "allow-null-check"
+        ],
+        "typedef-whitespace": [
+            true,
+            {
+                "call-signature": "nospace",
+                "index-signature": "nospace",
+                "parameter": "nospace",
+                "property-declaration": "nospace",
+                "variable-declaration": "nospace"
+            }
+        ],
+        "variable-name": [
+            true,
+            "ban-keywords"
+        ],
+        "whitespace": [
+            true,
+            "check-branch",
+            "check-decl",
+            "check-operator",
+            "check-separator",
+            "check-type"
+        ],
+        "trailing-comma": [
+            false
+        ],
+        "interface-over-type-literal": false,
+        "object-literal-sort-keys": false,
+        "member-access": [
+            false
+        ],
+        "arrow-parens": false,
+        "forin": false,
+        "jsx-wrap-multiline": false,
+        "jsx-boolean-value": false,
+        "one-variable-per-declaration": [
+            false
+        ],
+        "member-ordering": [
+            false
+        ],
+        "no-empty": false,
+        "only-arrow-functions": [
+            false
+        ],
+        "ordered-imports": [
+            false
+        ],
+        "max-classes-per-file": [
+            false
+        ],
+        "space-before-function-paren": false,
+        "prefer-for-of": false,
+        "no-bitwise": false,
+        "no-var-requires": false,
+        "no-string-literal": false,
+        "no-console": false,
+        "no-object-literal-type-assertion": false,
+        "object-literal-key-quotes": [
+            false
+        ],
+        "interface-name": [
+            false
+        ],
+        "no-shadowed-variable": false,
+        "no-submodule-imports": false,
+        "no-reference": false,
+        "no-implicit-dependencies": false,
+        "no-this-assignment": [true, { "allow-destructuring": true }]
+    }
+}
