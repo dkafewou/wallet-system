@@ -37,14 +37,14 @@ export default class User {
     password: string,
     fullName: string,
     role = UserRole.CUSTOMER,
-    runner: IDatabase<any> = DB.shared
+    runner: IDatabase<any> = DB.shared,
   ): Promise<User> {
     try {
       const statement = SQLBuilder.shared("users")
         .insert({
-          phone_number:    phoneNumber,
-          password: hashPassword(password),
-          full_name: fullName,
+          phone_number: phoneNumber,
+          password:     hashPassword(password),
+          full_name:    fullName,
           role,
         }).returning("*")
 
@@ -104,9 +104,25 @@ export default class User {
     }
   }
 
+  get redactedInfo(): IRedactedInfo {
+    return {
+      id:          this.id,
+      fullName:    this.fullName,
+      phoneNumber: this.phoneNumber,
+      role:        this.role,
+    }
+  }
+
   get [Symbol.toStringTag]() {
     return "User"
   }
+}
+
+interface IRedactedInfo {
+  id: string
+  fullName: string
+  phoneNumber: string
+  role: string
 }
 
 export interface IUser {

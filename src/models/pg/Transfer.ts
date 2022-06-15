@@ -4,6 +4,7 @@ import moment, { Moment } from "moment"
 import SQLBuilder from "../SQLBuilder"
 import { IDatabase } from "pg-promise"
 import { Money } from "ts-money"
+import PaginationInfo from "../PaginationInfo"
 
 export const enum TransferStatus {
   PENDING_APPROVAL = "PENDING_APPROVAL",
@@ -69,6 +70,51 @@ export default class Transfer {
     } catch (err) {
       throw new DatabaseError("Failed to set approval Admin for Transfer:", err)
     }
+  }
+
+  static async fetchByID(id: string, runner: IDatabase<any> = DB.shared): Promise<Transfer | null> {
+    try {
+      const statement = SQLBuilder.shared("transfers")
+        .select()
+        .where("id", id)
+
+      // Perform query and return data
+      const row = await runner.oneOrNone(statement.toQuery())
+      if (row == null) {
+        return null
+      }
+      return new Transfer(row)
+    } catch (err) {
+      throw new DatabaseError("Failed to fetch Transfer by id", err)
+    }
+  }
+
+
+  static async fetchAll(
+    page: number = 1,
+    maxResults: number = 30,
+    runner: IDatabase<any> = DB.shared
+  ): Promise<Transfer[]> {
+    try {
+      const statement = SQLBuilder.shared("transfers")
+        .select()
+        .limit(maxResults)
+        .offset(maxResults * (page - 1))
+
+      // Perform query and return data
+      const rows = await runner.any(statement.toQuery())
+      return rows.map(row => new Transfer(row))
+    } catch (err) {
+      throw new DatabaseError("Failed to fetch all Transfers", err)
+    }
+  }
+
+  static async fetchPaginationInfo(page = 1, maxResults = 30, runner = DB.shared) {
+    const query = SQLBuilder.shared("transfers")
+      .countDistinct({ total: "id" })
+
+    const row = await runner.one(query.toQuery())
+    return new PaginationInfo(row.total, page, maxResults)
   }
 
   get [Symbol.toStringTag]() {

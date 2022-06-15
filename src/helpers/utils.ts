@@ -11,3 +11,8 @@ export const hashPassword = (password: string): string => {
   const salt = bcrypt.genSaltSync(SALT_ROUNDS)
   return bcrypt.hashSync(password, salt)
 }
+
+export const randomBoolean = (): boolean => {
+  //80% probability of getting true
+  return Math.random() < 0.8
+}

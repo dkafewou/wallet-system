@@ -4,6 +4,7 @@ import moment, { Moment } from "moment"
 import SQLBuilder from "../SQLBuilder"
 import { IDatabase } from "pg-promise"
 import { Money } from "ts-money"
+import PaginationInfo from "../PaginationInfo"
 
 export default class Wallet {
   id: string
@@ -11,9 +12,9 @@ export default class Wallet {
   balance: Money
   createdAt: Moment
 
-  constructor({ id, currency, balance, userID, created_at }: IWallet) {
+  constructor({ id, currency, balance, user_id, created_at }: IWallet) {
     this.id = id
-    this.userID = userID
+    this.userID = user_id
     this.balance = new Money(balance, currency)
     this.createdAt = moment(created_at)
   }
@@ -70,7 +71,33 @@ export default class Wallet {
     }
   }
 
-  static async fetchAll(page: number, maxResults: number, runner: IDatabase<any> = DB.shared): Promise<Wallet[]> {
+  static async fetchByCurrencyForUser(
+    currency: string,
+    userID: string,
+    runner: IDatabase<any> = DB.shared
+  ): Promise<Wallet | null> {
+    try {
+      const statement = SQLBuilder.shared("wallets")
+        .select()
+        .where("user_id", userID)
+        .andWhere("currency", currency)
+
+      // Perform query and return data
+      const row = await runner.oneOrNone(statement.toQuery())
+      if (row == null) {
+        return null
+      }
+      return new Wallet(row)
+    } catch (err) {
+      throw new DatabaseError("Failed to fetch Wallet by currency for user", err)
+    }
+  }
+
+  static async fetchAll(
+    page: number = 1,
+    maxResults: number = 30,
+    runner: IDatabase<any> = DB.shared
+  ): Promise<Wallet[]> {
     try {
       const statement = SQLBuilder.shared("wallets")
         .select()
@@ -85,6 +112,36 @@ export default class Wallet {
     }
   }
 
+  static async fetchAllForUser(
+    userID: string,
+    page: number = 1,
+    maxResults: number = 30,
+    runner: IDatabase<any> = DB.shared
+  ): Promise<Wallet[]> {
+    try {
+      const statement = SQLBuilder.shared("wallets")
+        .select()
+        .where("user_id", userID)
+        .limit(maxResults)
+        .offset(maxResults * (page - 1))
+
+      // Perform query and return data
+      const rows = await runner.any(statement.toQuery())
+      return rows.map(row => new Wallet(row))
+    } catch (err) {
+      throw new DatabaseError("Failed to fetch all Wallets", err)
+    }
+  }
+
+  static async fetchPaginationInfo(userID: string, page = 1, maxResults = 30, runner = DB.shared) {
+    const query = SQLBuilder.shared("wallets")
+      .where("user_id", userID)
+      .countDistinct({ total: "id" })
+
+    const row = await runner.one(query.toQuery())
+    return new PaginationInfo(row.total, page, maxResults)
+  }
+
   get [Symbol.toStringTag]() {
     return "Wallet"
   }
@@ -94,6 +151,6 @@ export interface IWallet {
   id: string
   currency: string
   balance: number
-  userID: string
+  user_id: string
   created_at: string
 }
