@@ -32,3 +32,8 @@ requirement: node14, Postgres
 API documentation available with Swagger ui  at http://localhost:8080/api-docs/
 
 Endpoints available at http://localhost:8080/v1
+
+## Class diagram of the wallet system
+
+<img width="1116" alt="Screenshot 2022-06-14 at 2 38 07 PM" src="https://user-images.githubusercontent.com/28269983/173874596-d02f1908-d4c9-483b-a295-76ebbe777dfe.png">
+
