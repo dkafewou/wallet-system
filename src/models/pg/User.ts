@@ -44,7 +44,7 @@ export default class User {
         .insert({
           phone_number: phoneNumber,
           password:     hashPassword(password),
-          full_name:    fullName,
+          fullname:    fullName,
           role,
         }).returning("*")
 
@@ -89,7 +89,7 @@ export default class User {
 
   static async fetchByPhoneNumber(phoneNumber: string, runner: IDatabase<any> = DB.shared): Promise<User | null> {
     try {
-      const statement = SQLBuilder.shared("admins")
+      const statement = SQLBuilder.shared("users")
         .select()
         .where("phone_number", phoneNumber)
 

@@ -44,7 +44,7 @@ const onPost = async (req: Request, res: Response, next: NextFunction) => {
 }
 
 const onGet = async (req: Request, res: Response, next: NextFunction) => {
-  const { page, maxResults } = req.query
+  const { page = 1, maxResults = 30 } = req.query
   const { userID } = req.authClaims
   try {
     // Fetch user wallets

@@ -45,6 +45,6 @@ router.route("/admin/transfers")
   .get(jwtToken.authorize(), AdminTransfersHandler.onGet)
 
 router.route("/admin/transfers/:transferID/approve")
-  .get(jwtToken.authorize(), AdminTransfersHandler.onPost)
+  .post(jwtToken.authorize(), AdminTransfersHandler.onPost)
 
 export default router

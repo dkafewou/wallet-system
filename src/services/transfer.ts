@@ -24,6 +24,12 @@ export const processWalletTransfer = async (
     const transfer = await Transfer.create(
       wallet.id, recipientWallet.id, amountMoney.amount, wallet.balance.currency, transferStatus, tx,
     )
+    if (transfer.status === TransferStatus.PENDING_APPROVAL) {
+      return {
+        wallet,
+        transfer,
+      }
+    }
 
     const { updatedWallet } = await processTransferTransaction(wallet, recipientWallet, amountMoney, tx)
 
@@ -67,14 +73,17 @@ const processTransferTransaction = async (
 ) => {
   // New wallet balance
   const balance = wallet.balance.subtract(amountMoney)
-  let recipientBalance = recipientWallet.balance.add(amountMoney)
+  let recipientBalance: Money
 
   // If different currency wallet process recipient balance with conversion
   if (amountMoney.currency !== recipientWallet.balance.currency) {
     // Get conversation rate for different currency transfer
     const exchangeRate = await ExchangeRateAPI.getConversation(amountMoney.currency, recipientWallet.balance.currency)
     const exchangeMoney = amountMoney.multiply(exchangeRate)
-    recipientBalance = recipientWallet.balance.add(exchangeMoney)
+    const recipientMoney = new Money(exchangeMoney.amount, recipientWallet.balance.currency)
+    recipientBalance = recipientWallet.balance.add(recipientMoney)
+  } else {
+    recipientBalance = recipientWallet.balance.add(amountMoney)
   }
 
   const [updatedWallet, updatedRecipientWallet] = await Promise.all([

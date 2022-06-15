@@ -6,7 +6,7 @@ import { UnauthorizedError } from "../errors"
 
 // Define schema for validation
 const validationSchema = Joi.object().keys({
-  phoneNumber: Joi.string().length(15).pattern(/^[0-9]+$/).required(),
+  phoneNumber: Joi.string().max(15).pattern(/^[0-9]+$/).required(),
   password:    Joi.string().required(),
 })
 

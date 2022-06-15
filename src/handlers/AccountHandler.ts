@@ -6,7 +6,7 @@ import { InvalidInputError } from "../errors"
 // Define schema for validation
 const validationSchema = Joi.object().keys({
   fullName:        Joi.string().required(),
-  phoneNumber:     Joi.string().length(15).pattern(/^[0-9]+$/).required(),
+  phoneNumber:     Joi.string().max(15).pattern(/^[0-9]+$/).required(),
   password:        Joi.string().pattern(new RegExp("^[a-zA-Z0-9]{3,30}$")).required(),
   confirmPassword: Joi.ref("password"),
 })

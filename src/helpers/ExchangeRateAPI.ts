@@ -22,11 +22,11 @@ export default class ExchangeRateAPI {
     return client;
   }
 
-  static async getConversation(from: string, to: string): Promise<any> {
+  static async getConversation(from: string, to: string): Promise<number> {
     try {
-      const response = await this.shared.get(`/pair/${from}/${to}`);
+      const { data } = await this.shared.get(`/pair/${from}/${to}`);
 
-      return response
+      return data.conversion_rate
     } catch (err) {
       logger.error(`Failed to get conversation rate for ${from}/${to}: ${err}`);
       throw new ExternalApiError("Failed to get conversation rate", err)
