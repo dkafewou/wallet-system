@@ -6,6 +6,8 @@ import { corsHosts } from "./helpers/utils"
 import { onError } from "./handlers/JSONErrorHandler"
 import v1 from "./routes/v1"
 import notFoundHandler from "./handlers/NotFoundHandler"
+import swaggerUi from "swagger-ui-express"
+import * as swaggerDocument from "./swagger.json"
 
 const PORT = Config.shared.requireProduction("PORT", "8080")
 const CORS_HOST = Config.shared.requireProduction("CORS_HOST", "http://localhost:3000")
@@ -39,6 +41,9 @@ const corsOptions: cors.CorsOptions = {
 app.use(cors(corsOptions));
 // @ts-ignore
 app.options("*", cors(corsOptions));
+
+// Set up swagger ui
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 // Set up router
 app.use("/v1/", v1)
