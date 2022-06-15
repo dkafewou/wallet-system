@@ -10,7 +10,7 @@ The API should following requirements
 - Wallet transfers over N1,000,000 must be approved by an ADMIN user
 - An admin gets monthly payment summaries - capturing all payments made in the system
 
-##How to set up (MacOS)
+## How to set up (MacOS)
 requirement: node14, Postgres
 
 - Clone the repo `git clone https://github.com/dkafewou/wallet-system.git` and `cd wallet-system`
